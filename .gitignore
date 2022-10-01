@@ -20,11 +20,15 @@ parts/
 sdist/
 var/
 wheels/
+Scripts/
+credential/
 pip-wheel-metadata/
 share/python-wheels/
 *.egg-info/
 .installed.cfg
 *.egg
+*.code-workspace
+pyvenv.cfg
 MANIFEST
 
 # PyInstaller
