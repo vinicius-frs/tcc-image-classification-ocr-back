@@ -22,6 +22,8 @@ var/
 wheels/
 Scripts/
 credential/
+v1/main/*.txt
+pip_install.txt
 pip-wheel-metadata/
 share/python-wheels/
 *.egg-info/
