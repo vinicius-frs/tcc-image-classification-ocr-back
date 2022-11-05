@@ -1,11 +1,17 @@
 from flask import Flask, request, jsonify
+from flask_cors import CORS, cross_origin
 
 app = Flask(__name__)
+cors = CORS(app)
+app.config['CORS_HEADERS'] = 'Content-Type'
 
-@app.get("/getImageClass")
+@app.route('/getImageClass', methods=['POST'])
+@cross_origin()
 def getImageClass():
     import funcoes.decode_base64_image as di
     import funcoes.image_classification as ic
+    import uuid
+    import os
     if request.is_json:
         body = request.get_json()
 
@@ -14,19 +20,25 @@ def getImageClass():
         
         decoded = di.decodeBase64Image(body["img_base64"])
 
-        image = open('image.jpeg', 'wb')
+        id = str(uuid.uuid4())
+        image = open('image'+id+'.jpeg', 'wb')
         image.write(decoded)
         image.close()
 
-        return ic.getImageClass(), 201
+        objClass = ic.getImageClass('image'+id+'.jpeg')
+        os.remove('image'+id+'.jpeg')
+        return objClass, 201
 
     return {"error": "Request must be JSON"}, 415
 
-@app.get("/getImageText")
+@app.route('/getImageText', methods=['POST'])
+@cross_origin()
 def getImageText():
     import funcoes.decode_base64_image as di
     import funcoes.ocr_google_vision as ocr
     import funcoes.extract_key_data as ed
+    import uuid
+    import os
 
     if request.is_json:
         body = request.get_json()
@@ -38,12 +50,14 @@ def getImageText():
 
         decoded = di.decodeBase64Image(body["img_base64"])
 
-        image = open('image.jpeg', 'wb')
+        id = str(uuid.uuid4())
+        image = open('image'+id+'.jpeg', 'wb')
         image.write(decoded)
         image.close()
 
-        imageText = ocr.getImageText()
-
+        imageText = ocr.getImageText('image'+id+'.jpeg')
+        os.remove('image'+id+'.jpeg')
+        
         if body["img_class"] == "CNH frente":
             dados = ed.extractDadosCNHFrente(imageText)
 

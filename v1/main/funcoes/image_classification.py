@@ -11,7 +11,7 @@ classes = [
     "CPF frente",
 ]
 
-def getImageClass(image_path = "image.jpeg"):
+def getImageClass(image_path):
     image = Image.open(image_path)
     image = ImageOps.fit(image, size, Image.Resampling.LANCZOS)
 

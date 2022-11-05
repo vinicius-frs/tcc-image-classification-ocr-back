@@ -2,7 +2,7 @@ import os
 
 os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "../../credential/tcc-ocr-363917-ecdc5c2a609d.json"
 
-def getImageText(image_path = "image.jpeg"):
+def getImageText(image_path):
     """Detects text in the file."""
     from google.cloud import vision
     import io
