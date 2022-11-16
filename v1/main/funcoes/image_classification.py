@@ -2,7 +2,8 @@ from keras.models import load_model
 from PIL import Image, ImageOps
 import numpy as np
 
-model = load_model('../../keras_models/keras_model.h5')
+np.set_printoptions(suppress=True)
+model = load_model('../../keras_models/keras_model.h5', compile=False)
 data = np.ndarray(shape=(1, 224, 224, 3), dtype=np.float32)
 size = (224, 224)
 classes = [
@@ -12,7 +13,7 @@ classes = [
 ]
 
 def getImageClass(image_path):
-    image = Image.open(image_path)
+    image = Image.open(image_path).convert('RGB')
     image = ImageOps.fit(image, size, Image.Resampling.LANCZOS)
 
     image_array = np.asarray(image)

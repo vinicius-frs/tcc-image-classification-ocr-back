@@ -15,8 +15,9 @@ def extractDadosRGVerso(imageText):
     dados["nome"] = imageText["texts"][0][nome_inicio:nome_fim].strip()
 
     naturalidade_inicio = re.search("NATURALIDADE|naturalidade", imageText["texts"][0]).span()[1]
-    naturalidade_fim = re.search("DOC ORIGEM|doc origem", imageText["texts"][0]).span()[0]
+    naturalidade_fim = re.search("CPF|DOC ORIGEM", imageText["texts"][0]).span()[0]
     dados["naturalidade"] = imageText["texts"][0][naturalidade_inicio:naturalidade_fim].strip()
+    dados["naturalidade"] = re.sub("\d{2}\/\d{2}\/\d{4}", "", dados["naturalidade"].replace("DATA DE\nEXPEDIÇÃO", ""))
 
     data_nascimento_inicio = re.search("DATA DE NASCIMENTO|data de nascimento", imageText["texts"][0]).span()[1]
     dados["data_nascimento"] = re.findall("\d{2}\/\d{2}\/\d{4}", imageText["texts"][0][data_nascimento_inicio:len(imageText["texts"][0])])[0]
@@ -48,7 +49,7 @@ def extractDadosCNHFrente(imageText):
     dados["nome"] = imageText["texts"][0][nome_inicio:nome_fim].strip()
 
     cnh_validade_inicio = re.search("VALIDADE", imageText["texts"][0]).span()[1] 
-    cnh_validade_fim = re.search("ACC", imageText["texts"][0]).span()[0]
+    cnh_validade_fim = re.search("ACC|FILIAÇÃO", imageText["texts"][0]).span()[0]
     dados["cnh_validade"] = re.findall("\d{2}\/\d{2}\/\d{4}", imageText["texts"][0][cnh_validade_inicio:cnh_validade_fim])[0]
 
     data_nascimento_inicio = re.search("DATA NASCIMENTO|SSP", imageText["texts"][0]).span()[1] 
