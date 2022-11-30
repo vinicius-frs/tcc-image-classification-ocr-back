@@ -49,7 +49,8 @@ def extractDadosCNHFrente(imageText):
     dados["nome"] = imageText["texts"][0][nome_inicio:nome_fim].strip()
 
     cnh_validade_inicio = re.search("VALIDADE", imageText["texts"][0]).span()[1] 
-    cnh_validade_fim = re.search("ACC|FILIAÇÃO", imageText["texts"][0]).span()[0]
+    cnh_validade_fim = re.search("ACC", imageText["texts"][0]) or re.search("FILIAÇÃO", imageText["texts"][0])
+    cnh_validade_fim = cnh_validade_fim.span()[0]
     dados["cnh_validade"] = re.findall("\d{2}\/\d{2}\/\d{4}", imageText["texts"][0][cnh_validade_inicio:cnh_validade_fim])[0]
 
     data_nascimento_inicio = re.search("DATA NASCIMENTO|SSP", imageText["texts"][0]).span()[1] 
